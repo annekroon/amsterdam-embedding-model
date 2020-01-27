@@ -69,4 +69,7 @@ def clean_data_parameters():
     return parameters
 
 def get_cleaned_data():
-    return pd.merge(clean_data_metrics(), clean_data_parameters(), on=['classifier','model','vectorizer'], how='left')
+    df = pd.merge(clean_data_metrics(), clean_data_parameters(), on=['classifier','model','vectorizer'], how='left')
+    df.rename(columns={'index': 'metrics'}, inplace=True)
+    print("..........loaded the data frame........")
+    return df
