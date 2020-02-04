@@ -29,7 +29,6 @@ from sklearn.ensemble import ExtraTreesClassifier
 import gensim
 import os
 
-
 #path_to_embeddings='/home/anne/tmpanne/AEM_small_sample/test'
 
 class classifier_analyzer():
@@ -186,7 +185,7 @@ class classifier_analyzer():
                                 "classifier": name} )
                 
         return class_report, results
-
+    
 
 def clean_df_true_pred(results):
     data = pd.DataFrame.from_dict(results)
@@ -203,7 +202,6 @@ def clean_df_true_pred(results):
     df = df[['Predicted label', 'Actual label', 'Classifier']]
     
     return df
-    
    
 
 #"w2v_count", "w2v_tfidf", "count", "tfidf"

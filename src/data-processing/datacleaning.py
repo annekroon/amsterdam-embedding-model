@@ -8,7 +8,6 @@
 import sys
 print(sys.stdin.read().upper())
 
-
 import seaborn as sns
 import matplotlib.pyplot as plt
 import json

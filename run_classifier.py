@@ -4,6 +4,7 @@ import logging
 import argparse
 import json
 import pandas as pd
+from src.analysis.classifier import *
 
 path_to_data='/home/anne/tmpanne/AEM_data/'
 #dataset = 'dataset_vermeer.pkl'
