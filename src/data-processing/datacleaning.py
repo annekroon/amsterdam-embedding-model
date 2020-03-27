@@ -16,7 +16,6 @@ import pandas as pd
 
 def get_data(file):
     path_to_data='/home/anne/tmpanne/AEM_output/'
-    file = file
 
     fname_sml = '{}{}'.format(path_to_data, file)
     with open(fname_sml) as handle:
@@ -31,24 +30,24 @@ def get_data(file):
     df['indicators'] = df.index
     return df
 
-def merge_baseline_embedding():
-    df_baseline = get_data('baseline_classreport.json')
-    df_embeddings = get_data('embeddings_classreport.json')
+def merge_baseline_embedding(dataset):
+    df_baseline = get_data('baseline_classreport_dataset_{}_embed_size_large.json'.format(dataset))
+    df_embeddings = get_data('embeddings_classreport_dataset_{}_embed_size_large.json'.format(dataset))
     df = pd.concat([df_baseline , df_embeddings])
     return df
 
-def clean_data_metrics():
-    df = merge_baseline_embedding()
+def clean_data_metrics(dataset):
+    df = merge_baseline_embedding(dataset)
     i = ['precision', 'recall', 'support', 'f1-score']
     df[df['indicators'].isin(i)]
     df.reset_index(inplace=True)
     d = df[df['indicators'].isin(i)].groupby(['classifier', 'model', 'indicators', 'vectorizer']).max()
     return d
 
-def clean_data_parameters():
+def clean_data_parameters(dataset):
     i = ['clf__C', 'clf__fit_intercept', 'clf__loss', 'clf__max_iter','clf__alpha', 'clf__penalty', 'clf__gamma', 'clf__kernel', 'clf__max_features']
 
-    df = merge_baseline_embedding()
+    df = merge_baseline_embedding(dataset)
     df = df[df['indicators'].isin(i)].groupby(['classifier', 'model', 'indicators', 'vectorizer']).max()
     df.reset_index(inplace=True)
     e = df.groupby(['classifier', 'model','vectorizer']).apply(lambda g: pd.Series(g.parameters.values, index= + g.indicators.astype(str)))
@@ -67,8 +66,8 @@ def clean_data_parameters():
     parameters = pd.merge(p, parameters, on='unique_')
     return parameters
 
-def get_cleaned_data():
-    df = pd.merge(clean_data_metrics(), clean_data_parameters(), on=['classifier','model','vectorizer'], how='left')
+def get_cleaned_data(dataset):
+    df = pd.merge(clean_data_metrics(dataset), clean_data_parameters(dataset), on=['classifier','model','vectorizer'], how='left')
     df.rename(columns={'index': 'metrics'}, inplace=True)
     print("..........loaded the data frame........")
     return df

@@ -1,5 +1,6 @@
-python3 run_classifier.py  --word_embedding_path /home/anne/tmpanne/fullsample/ --word_embedding_sample_size large --data_path /home/anne/tmpanne/AEM_data/ --output '/home/anne/tmpanne/AEM_output/' --dataset 'dataset_burscher.pkl'
+python3 run_classifier.py  --word_embedding_path /home/anne/tmpanne/fullsample/ --word_embedding_sample_size large --data_path /home/anne/tmpanne/AEM_data/ --outputpath '/home/anne/tmpanne/AEM_output/' --dataset 'dataset_burscher.pkl'
 
+nohup python3 run_classifier.py  --word_embedding_path /home/anne/tmpanne/fullsample/ --word_embedding_sample_size large --data_path /home/anne/tmpanne/AEM_data/ --outputpath '/home/anne/tmpanne/AEM_output/' --dataset 'dataset_vermeer.pkl' &
 
 python3 run_intrinsic_evaluation.py --word_embedding_path /home/anne/tmpanne/fullsample/ --word_embedding_sample_size large --output '/home/anne/tmpanne/AEM_output/' --path_to_evaluation_data data/raw/question-words.text
 
