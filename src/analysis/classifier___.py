@@ -20,7 +20,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.datasets import load_iris
 from scipy.sparse import csr_matrix
 from sklearn.linear_model import SGDClassifier
-from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import MultinomialNB
 import logging
 import json
 from sklearn.svm import SVC
@@ -30,6 +30,7 @@ import gensim
 import os
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import FunctionTransformer
+from mlxtend.preprocessing import DenseTransformer
 
 #path_to_embeddings='/home/anne/tmpanne/AEM_small_sample/test'
 
@@ -37,7 +38,6 @@ class classifier_analyzer():
     
     def __init__(self, path_to_data, path_to_embeddings, dataset):
         self.nmodel = 0
-        self._CV_ = 10
         df = pd.read_pickle(path_to_data + dataset)
         logging.info("... loading the data...\n\nthis is length of the dataframe: {}".format(len(df)))
         self.test_size = 0.2
@@ -45,9 +45,9 @@ class classifier_analyzer():
         self.labels = df['topic']
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.data, self.labels, test_size=self.test_size, random_state=42)
         self.basepath = path_to_embeddings
-        self.names = ["BernoulliNB", "Passive Agressive", "SGDClassifier" , "SVM", "ET"]
+        self.names = ["GaussianNB", "Passive Agressive", "SGDClassifier" , "SVM", "ET"]
         self.parameters = [ 
-                    { 'clf__alpha': (1e-2, 1e-3, 1e-5) } ,
+                    { 'clf__var_smoothing' : [1e-8, 1e-7, 1e-6, 1e-5, 1e-4] } ,
                     
                     {'clf__loss': ('hinge', 'squared_hinge'),
                     'clf__C': (0.01, 0.5, 1.0)   ,
@@ -66,7 +66,7 @@ class classifier_analyzer():
                     { "clf__max_features": ['auto', 'sqrt', 'log2'] }
 
                      ]
-        self.classifiers = [BernoulliNB(),
+        self.classifiers = [GaussianNB(),
                             PassiveAggressiveClassifier(), 
                             SGDClassifier(),
                             SVC(),
@@ -128,7 +128,7 @@ class classifier_analyzer():
                         
                         clf_pipe = Pipeline([ ('vect', vec['vectorizer']), ('clf', classifier), ])
 
-                        gs_clf = GridSearchCV(clf_pipe, param_grid=params, cv=self._CV_)
+                        gs_clf = GridSearchCV(clf_pipe, param_grid=params, cv=2)
                         clf = gs_clf.fit(self.X_train, self.y_train)
                         score = clf.score(self.X_test, self.y_test)
 
@@ -157,22 +157,23 @@ class classifier_analyzer():
     def gridsearch_with_classifiers_baseline(self):
         class_report = []
         results = []
-        
         for vec, n in zip([CountVectorizer(), TfidfVectorizer()], ["Count", "Tfidf"]):
-            
             print("loaded the vectorizer: {}\n\n\{}".format(n, vec)) 
-            
+
             for name, classifier, params in zip(self.names, self.classifiers, self.parameters):
                 my_dict = {}
+                final_results = []
 
                 logging.info("Starting gridsearch CV..")
                 logging.info("Classifier name: {}\n classifier:{}\n params{}\n".format(name, classifier, params)) 
 
-                clf_pipe = Pipeline([ ('vect', vec), ('clf', classifier), ])
+                clf_pipe = Pipeline([ ('vect', vec), ('to_dense', DenseTransformer()), ('clf', classifier), ])
+                
                 #clf_pipe = make_pipeline(vec, FunctionTransformer(lambda x: x.todense(), accept_sparse=True), classifier)
 
-                gs_clf = GridSearchCV(clf_pipe, param_grid=params, cv=self._CV_)
+                gs_clf = GridSearchCV(clf_pipe, param_grid=params, cv=2)
                 clf = gs_clf.fit(self.X_train, self.y_train)
+                self.X_train
                 score = clf.score(self.X_test, self.y_test)
 
                 logging.info("{} score: {}".format(name, score))
@@ -190,16 +191,34 @@ class classifier_analyzer():
 
                 y_hats = clf.predict(self.X_test)
                 
-                results.append({"predicted": y_hats,
+                final_results.append({"predicted": y_hats,
                                 "actual" : self.y_test.values  ,
                                 "classifier": name ,
                                 "vectorizer": n , 
                                 "model": "baseline" } )
+        
+            results.append(final_results)
+    
                 
         return class_report, results
     
 
 def clean_df_true_pred(results):
-    return pd.DataFrame.from_dict(results)
+    df = pd.DataFrame.from_dict(results)
+
+    
+ #   predicted = data.predicted.apply(pd.Series).merge(data, right_index = True, left_index = True) \
+ #   .drop(["predicted"], axis = 1).melt(id_vars = ['classifier'], value_name = "Predicted label")
+
+ #   actual = data.actual.apply(pd.Series).merge(data, right_index = True, left_index = True) \
+ #   .drop(["predicted"], axis = 1).melt(id_vars = ['classifier'], value_name = "Actual label")
+
+ #   df = pd.merge(predicted, actual, how = 'inner', left_index = True, right_index = True)
+#    df['Classifier'] = df['classifier_x']
+#    df = df[df.variable_x != 'actual']
+#    df = df[['Predicted label', 'Actual label', 'Classifier', 'model', 'vectorizer']]
+    
+    return df
+   
 
 #"w2v_count", "w2v_tfidf", "count", "tfidf"
