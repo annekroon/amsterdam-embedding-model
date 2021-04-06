@@ -15,34 +15,37 @@ The news articles were derived from the INCA database for the time period: 2000-
 
 Specifically, news articles appeared in the following sources:
 
-ad (print)                 871156.0
-ad (www)                   113671.0
-anp                       2048369.0
-bd (www)                    14781.0
-bndestem (www)              15262.0
-destentor (www)             14620.0
-ed (www)                    15754.0
-fd (print)                 452967.0
-frieschdagblad (www)          267.0
-gelderlander (www)          10553.0
-metro (print)              169362.0
-metro (www)                 98307.0
-nos                           730.0
-nos (www)                   62415.0
-nrc (print)                662233.0
-nrc (www)                   65885.0
-nu                         138084.0
-parool (www)                34647.0
-pzc (www)                   13312.0
-spits (www)                 41422.0
-telegraaf (print)          811746.0
-telegraaf (www)            307755.0
-trouw (print)              603098.0
-trouw (www)                 34089.0
-tubantia (www)              13779.0
-volkskrant (print)         697770.0
-volkskrant (www)           129502.0
-zwartewaterkrant (www)        378.0
+
+| outlets                | N articles  |
+|------------------------|-----------|
+| ad (www)               | 113671.0  |
+| ad (print              | 871156.0  |
+| anp                    | 2048369.0 |
+| bd (www)               | 14781.0   |
+| bndestem (www)         | 15262.0   |
+| destentor (www)        | 14620.0   |
+| ed (www)               | 15754.0   |
+| fd (print)             | 452967.0  |
+| frieschdagblad (www)   | 267.0     |
+| gelderlander (www)     | 10553.0   |
+| metro (print)          | 169362.0  |
+| metro (www)            | 98307.0   |
+| nos                    | 730.0     |
+| nos (www)              | 62415.0   |
+| nrc (print)            | 662233.0  |
+| nrc (www)              | 65885.0   |
+| nu                     | 138084.0  |
+| parool (www)           | 34647.0   |
+| pzc (www)              | 13312.0   |
+| spits (www)            | 41422.0   |
+| telegraaf (print)      | 811746.0  |
+| telegraaf (www)        | 307755.0  |
+| trouw (print)          | 603098.0  |
+| trouw (www)            | 34089.0   |
+| tubantia (www)         | 13779.0   |
+| volkskrant (print)     | 697770.0  |
+| volkskrant (www)       | 129502.0  |
+| zwartewaterkrant (www) | 378.0     |
 
 
 1.657.264.089 raw words and 107.965.966 sentences.
@@ -50,18 +53,35 @@ zwartewaterkrant (www)        378.0
 ---
 This repo contains the following elements:
 
-- [Training] of word embeddings models:
+- [Training](https://github.com/annekroon/amsterdam-embedding-model/tree/master/model-training) of word embeddings models:
 
     - We use Word2Vec to train sets of models on the AEM sample with different parameter settings
 
 - Evaluation of these models:
 
-	- Intrinsic evaluation (i.e., syntatic and semantic accuracy of the models), using the following task: [evaluating dutch embeddings](https://github.com/clips/dutchembeddings)
+	- Intrinsic evaluation (i.e., Syntatic and semantic accuracy of the models), using the following task: [evaluating dutch embeddings](https://github.com/clips/dutchembeddings)
 
 	- Extrinsic evaluation (i.e., performance of the models in downstream tasks)
 
 In doing so, we compare the here-trained models with pre-trained word embedding models on Dutch corpora (i.e., the COW model and a FastText model trained on Wikipedia data, available here: https://github.com/clips/dutchembeddings).
 
+## First findings:
+
+[Results] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-figures-intrinsic.ipynb) indicate that regarding the **intrinsic evaluation**, we find that in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: *window size = 10, dimensions = 300, negative sampling = 5*
+
+![Intrinsic evaluation](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/intrinsic_output_2.png)
+
+Regarding the **intrinsic evaluation**, we find that in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: window size = 10, dimensions = 300, negative sampling = 5.
+
+[Results](https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-results-downstream.ipynb) indicate that regarding the **downstream task** marco f1-scores may be boosted when using a vectorizer based on the AEM.
+
+The classification performance of the Burscher et al dataset:
+
+![Downstream evaluation Burscher] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Burscher.png)
+
+The classification performance of the Vermeer et al dataset:
+
+![Downstream evaluation Vermeer] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Vermeer.png)
 ---
 ## Python scripts:
 
@@ -102,8 +122,8 @@ python3 get_results_classifier.py --output tables_figures/ --dataset vliegenthar
 
 ## Directories:
 
-- `lib/`: Modules used in python scripts: Classification
-- `output/`: Default output directory
+- `src/`: Modules used in python scripts: Classification
+- `output/`: default output directory
 - `helpers/`: small scripts to get info on training samples
 -`model_training/`: here you will find code used to train the models.
 
@@ -117,7 +137,7 @@ The current study tests the quality of classifiers w/wo embedding vectorizers on
 
 Vermeer, S.: [Dutch News Classifier](https://figshare.com/articles/A_supervised_machine_learning_method_to_classify_Dutch-language_news_items/7314896/1) --> This datasets classifies Dutch news in four topics
 
-Buscher, Vliegenthart & De Vrees: [Policy Issues Classifier](https://www.google.com/search?q=Using+Supervised+Machine+Learning+to+Code+Policy+Issues%3A+Can+Classifiers+Generalize&oq=Using+Supervised+Machine+Learning+to+Code+Policy+Issues%3A+Can+Classifiers+Generalize&aqs=chrome..69i57.688j0j7&sourceid=chrome&ie=UTF-8) --> This paper tests a classifer of 18 topics on Dutch news
+Burscher, Vliegenthart & de Vreese: [Policy Issues Classifier](https://www.google.com/search?q=Using+Supervised+Machine+Learning+to+Code+Policy+Issues%3A+Can+Classifiers+Generalize&oq=Using+Supervised+Machine+Learning+to+Code+Policy+Issues%3A+Can+Classifiers+Generalize&aqs=chrome..69i57.688j0j7&sourceid=chrome&ie=UTF-8) --> This paper tests a classifer of 18 topics on Dutch news
 
 We thank the authors of these papers for sharing their data. If there are any issues with the way we handle the data or in case suggestions arise, please contact us.
 
