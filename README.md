@@ -83,7 +83,7 @@ It seems that a word embedding model trained on a Dutch news corpus outperforms 
 
 ---
 
-## Python scripts:
+## Scripts in this repo
 
 #### run_classifier.py
 
