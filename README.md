@@ -61,19 +61,21 @@ In doing so, we compare the here-trained models with pre-trained word embedding 
 
 ## First findings:
 
+### Intrinsic Evaluation
+
 [Results](https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-figures-intrinsic.ipynb) indicate that regarding the **intrinsic evaluation**, we find that both in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: *window size = 10, dimensions = 300, negative sampling = 5*
 
 ![Intrinsic evaluation](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/intrinsic_output_2.png)
 
-Regarding the **intrinsic evaluation**, we find that in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: window size = 10, dimensions = 300, negative sampling = 5.
+### Downstream Evaluation
 
-[Results](https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-results-downstream.ipynb) indicate that regarding the **downstream task** marco f1-scores may be boosted when using a vectorizer based on the AEM.
+[Results](https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-results-downstream.ipynb) indicate that regarding the **downstream task** marco f1-scores may be boosted when using a vectorizer based on the AEM when compared to a baseline model (using a count / tfidf vectorizer) as well as other Dutch-language embedding models.
 
-The classification performance of the Burscher et al dataset:
+Performance across vectorizers based on AEM, cow, wiki and baseline using Burscher et al dataset:
 
 ![Downstream evaluation Burscher](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Burscher.png)
 
-The classification performance of the Vermeer et al dataset:
+Performance across vectorizers based on AEM, cow, wiki and baseline using Vermeer et al dataset:
 
 ![Downstream evaluation Vermeer](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Vermeer.png)
 ---
