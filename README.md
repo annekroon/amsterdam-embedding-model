@@ -78,6 +78,9 @@ Performance across vectorizers based on AEM, cow, wiki and baseline using Bursch
 Performance across vectorizers based on AEM, cow, wiki and baseline using Vermeer et al dataset:
 
 ![Downstream evaluation Vermeer](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Vermeer.png)
+
+It seems that a word embedding model trained on a Dutch news corpus outperforms existing models that were trained on the Dutch Wikipedia and various Dutch websites. The AEM can be used to improve the quality of automated content analysis in Dutch. In addition, our results suggest that training such models on news corpora are a feasible way of creating resources for languages with less resources than English.
+
 ---
 
 ## Python scripts:
