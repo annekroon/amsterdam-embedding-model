@@ -1,14 +1,8 @@
 # Amsterdam Embedding Model
 
-For the intrinsic evaluation:
-'data/raw/question-words.txt': derived from: https://github.com/clips/dutchembeddings
-
-
-# AEM
-
 This repo attempts to build the 'Amsterdam Embedding Model' (AEM): A news domain specific word embedding model trained on Dutch journalistic content.
 
-Amsterdam Embedding Model (AEM) Corpus
+### Amsterdam Embedding Model (AEM) Corpus
 
 This corpus contains unique sentences derived from a total of 7441914 Dutch news articles that appeared in print media and online sources.
 The news articles were derived from the INCA database for the time period: 2000-01-01 - 2017-12-31.
@@ -16,39 +10,39 @@ The news articles were derived from the INCA database for the time period: 2000-
 Specifically, news articles appeared in the following sources:
 
 
-| outlets                | N articles  |
+| Outlet              | N articles  |
 |------------------------|-----------|
-| ad (www)               | 113671.0  |
-| ad (print              | 871156.0  |
-| anp                    | 2048369.0 |
-| bd (www)               | 14781.0   |
-| bndestem (www)         | 15262.0   |
-| destentor (www)        | 14620.0   |
-| ed (www)               | 15754.0   |
-| fd (print)             | 452967.0  |
-| frieschdagblad (www)   | 267.0     |
-| gelderlander (www)     | 10553.0   |
-| metro (print)          | 169362.0  |
-| metro (www)            | 98307.0   |
-| nos                    | 730.0     |
-| nos (www)              | 62415.0   |
-| nrc (print)            | 662233.0  |
-| nrc (www)              | 65885.0   |
-| nu                     | 138084.0  |
-| parool (www)           | 34647.0   |
-| pzc (www)              | 13312.0   |
-| spits (www)            | 41422.0   |
-| telegraaf (print)      | 811746.0  |
-| telegraaf (www)        | 307755.0  |
-| trouw (print)          | 603098.0  |
-| trouw (www)            | 34089.0   |
-| tubantia (www)         | 13779.0   |
-| volkskrant (print)     | 697770.0  |
-| volkskrant (www)       | 129502.0  |
-| zwartewaterkrant (www) | 378.0     |
+| ad (www)               | 113671  |
+| ad (print              | 871156  |
+| anp                    | 2048369 |
+| bd (www)               | 14781   |
+| bndestem (www)         | 15262   |
+| destentor (www)        | 14620   |
+| ed (www)               | 15754   |
+| fd (print)             | 452967  |
+| frieschdagblad (www)   | 267     |
+| gelderlander (www)     | 10553   |
+| metro (print)          | 169362  |
+| metro (www)            | 98307   |
+| nos                    | 730     |
+| nos (www)              | 62415   |
+| nrc (print)            | 662233  |
+| nrc (www)              | 65885   |
+| nu                     | 138084  |
+| parool (www)           | 34647   |
+| pzc (www)              | 13312   |
+| spits (www)            | 41422   |
+| telegraaf (print)      | 811746  |
+| telegraaf (www)        | 307755  |
+| trouw (print)          | 603098  |
+| trouw (www)            | 34089   |
+| tubantia (www)         | 13779   |
+| volkskrant (print)     | 697770  |
+| volkskrant (www)       | 129502  |
+| zwartewaterkrant (www) | 378     |
 
 
-1.657.264.089 raw words and 107.965.966 sentences.
+*1.657.264.089 raw words and 107.965.966 sentences.*
 
 ---
 This repo contains the following elements:
@@ -67,7 +61,7 @@ In doing so, we compare the here-trained models with pre-trained word embedding 
 
 ## First findings:
 
-[Results] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-figures-intrinsic.ipynb) indicate that regarding the **intrinsic evaluation**, we find that in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: *window size = 10, dimensions = 300, negative sampling = 5*
+[Results](https://github.com/annekroon/amsterdam-embedding-model/blob/master/get-figures-intrinsic.ipynb) indicate that regarding the **intrinsic evaluation**, we find that both in terms of semantic and syntatic accuracy, the AEM outperforms the other embedding models. The best model is trained the following parameter settings: *window size = 10, dimensions = 300, negative sampling = 5*
 
 ![Intrinsic evaluation](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/intrinsic_output_2.png)
 
@@ -77,12 +71,13 @@ Regarding the **intrinsic evaluation**, we find that in terms of semantic and sy
 
 The classification performance of the Burscher et al dataset:
 
-![Downstream evaluation Burscher] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Burscher.png)
+![Downstream evaluation Burscher](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Burscher.png)
 
 The classification performance of the Vermeer et al dataset:
 
-![Downstream evaluation Vermeer] (https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Vermeer.png)
+![Downstream evaluation Vermeer](https://github.com/annekroon/amsterdam-embedding-model/blob/master/output/downstream_Vermeer.png)
 ---
+
 ## Python scripts:
 
 #### run_classifier.py
